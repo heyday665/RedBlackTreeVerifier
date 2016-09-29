@@ -1,86 +1,86 @@
 #include <stdio.h>
 #include <string.h>
 
-int MAX-DEPTH = 0;
+int MAX-DEPTH = -1;
 int CURR-DEPTH = 0;
-int nodesChecked = 0;
+int rootChecked = 0;
 
 typedef struct node {
     char color;
-    char *id; //changed from assginment default of char *data;
+    char *id;   //changed from assginment default of char *data;
     struct node* left;
     struct node* right;
 } treenode;
 
-int verify(node root){
-    if (root){
-        //The node exists
-        if (root->color == 'r' || root->color == 'b') {
-            //Node has an assigned color
-            if (!(root->left) && !(root->right)) {
-                //All children are leafs
-                if (root->color == 'r'){
-                    //End of tree is a red
-                    return 3;//RED_END
-                } else {
-                    //Nothing
+int depthVerify(treenode root){
+    if (root->left){
+        CURR-DEPTH++;
+        depthVerify(root->left);
+    }
+    else {
+        if (MAX-DEPTH == -1){
+            MAX-DEPTH = CURR-DEPTH;
+            //Need something here
+        } else {
+            if (MAX-DEPTH == CURR-DEPTH){
+                //Need something here
+            }
+        }        
+    }
+}
+
+int verify(treenode root){
+    if (root){                                                  //The node exists
+        if (root->color == 'r' || root->color == 'b') {         //Node has an assigned color
+            if (!(root->left) && !(root->right)) {              //All children are leafs
+                if (root->color == 'r'){                        //End of tree is a red
+                    return 3;                           //RED_END
+                } else {                                        //Nothing
+                    //Need something here
                 }
-            } else {
-                //node has atlease one non leaf
-                if (nodesChecked == 0){
-                    //This node is the head of tree
-                    nodesChecked++;
-                    if (root->color != 'b'){
-                        //Head node is not black
-                        return 2;//ROOT_RED
-                    } else {
-                        //Recurse to the next node,
-                        //left first (depth-first)
+            } else {                                            //node has atlease one non leaf
+                if (!rootChecked){                              //This node is the head of tree
+                    rootChecked++;
+                    if (root->color != 'b'){                    //Head node is not black
+                        return 2;                       //ROOT_RED
+                    } else {                                    //Recurse to the next node
                         verify(root->left);
                         verify(root->right);
                     }
                 } 
                 
-                else {
-                    //Node is not the head of the tree
-                    nodesChecked++;
-                    if (root->color == 'r'){
-                        //Current node is red
-                        if (root->left){
-                            //Left node Exists
-                            if (root->left->color == 'r'){
-                                //Red node has Red left child
-                                return 4;//RED_ON_RED
-                            } else {
-                                //This child node is black
+                else {                                          //Node is not the head of the tree
+                    if (root->color == 'r'){                    //Current node is red
+                        if (root->left){                        //Left node Exists
+                            if (root->left->color == 'r'){      //Red node has Red left child
+                                return 4;               //RED_ON_RED
+                            } else {                            //This child node is black
+                                //Need something here
                             }
-                        }else{
-                            //Left node is a leaf, therefore black
+                        } else {                                  //Left node is a leaf, therefore black
+                            //Need something here
                         }
             
-                        if (root->right){
-                            //Right node Exists
-                            if (root->right->color == 'r'){
-                                //Red node has Red right child
-                                return 4;//RED_ON_RED
-                            } else {
-                                //This child node is black
+                        if (root->right){                       //Right node Exists
+                            if (root->right->color == 'r'){     //Red node has Red right child
+                                return 4;               //RED_ON_RED
+                            } else {                            //This child node is black
+                                //Need something here
                             }
-                        } else {
-                            //Right node Doesn't Exist
+                        } else {                                //Right node Doesn't Exist
+                            //Need something here
                         }
-                    } else {
-                        //Node is black
+                    } else {                                    //Node is black
+                        //Need something here
                     }
                 }
             }
-        } else {
-            //Node has no assigned color
-            return 1; //NODE_UNCOLORED
+        } else {                                                //Node has no assigned color
+            return 1;                                   //NODE_UNCOLORED
         }
     } else {
         printf("Passed a bad pointer!\n");
-        return 6; // NO_ROOT_NODE
+        return 6;                                       // NO_ROOT_NODE
     }
 }
 
@@ -149,15 +149,16 @@ int main(){
     //  Giving the tree a black-height of 3
 
     printf("The result of the verify() function is: %d\n", verify(a));
-               //Verifies that the tree is RB.
-               //If not, it returns a value to determine,
-               //error with tree.
-               //
-               //Return error codes:
-               //   1- Uncolored nodes 
-               //   2- Root node is red
-               //   3- A leaf is red
-               //   4- R nodes has <2 B children
-               //   5- BHeight is not == for all leaves
-               //   6- No root node
+
+    //Verifies that the tree is RB.
+    //If not, it returns a value to determine,
+    //error with tree.
+    //
+    //Return error codes:
+    //   1- Uncolored nodes 
+    //   2- Root node is red
+    //   3- A leaf is red
+    //   4- R nodes has <2 B children
+    //   5- BHeight is not == for all leaves
+    //   6- No root node
 }
